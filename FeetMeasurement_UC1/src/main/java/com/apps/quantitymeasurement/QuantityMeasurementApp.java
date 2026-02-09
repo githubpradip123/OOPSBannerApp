@@ -39,9 +39,9 @@ public class QuantityMeasurementApp {
     public static void demonstrateFeetEquality()
     {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the First Feet Value");
+        System.out.println("Enter the First Feet Value:-");
         double feetValue1 = sc.nextDouble();
-        System.out.println("Enter the Second Feet Value");
+        System.out.println("Enter the Second Feet Value:-");
         double feetValue2 = sc.nextDouble();
         Feet feet1 = new Feet(feetValue1);
         Feet feet2 = new Feet(feetValue2);
@@ -51,9 +51,9 @@ public class QuantityMeasurementApp {
     public static void demonstrateInchesEquality()
     {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the First Inches Value");
+        System.out.println("Enter the First Inches Value:-");
         double inchesValue1 = sc.nextDouble();
-        System.out.println("Enter the Second Inches Value");
+        System.out.println("Enter the Second Inches Value:-");
         double inchesValue2 = sc.nextDouble();
 
         Inches inches1 = new Inches(inchesValue1);
