@@ -1,9 +1,14 @@
 package com.apps.quantitymeasurement;
 
-public class Length {
+import java.text.DecimalFormat;
 
+public class Length {
     private double value;
     private LengthUnit unit;
+
+    public double getValue() {
+        return value;
+    }
 
     public enum LengthUnit {
             FEET(12.0),
@@ -27,17 +32,29 @@ public class Length {
             this.unit = unit;
     }
 
-    private double convertToBaseUnit()
-    {
+    private double convertToBaseUnit() {
         if (this.unit == null) {  return 0.0;  }
+        if (!Double.isFinite(value)) throw new IllegalArgumentException("value must not be null or Infinite or NAN");
         return this.value * this.unit.getConversionFactor();
     }
 
-    public boolean compare(Length length)
-    {
+    public boolean compare(Length length) {
         double first = this.convertToBaseUnit();
         double second = length.convertToBaseUnit();
          return Double.compare(first, second) == 0;
+    }
+
+    public Length convertTo(LengthUnit length2) throws Exception {
+        if (length2 == null  ) throw new IllegalArgumentException("Length unit must not be null");
+        if (!Double.isFinite(value)) throw new IllegalArgumentException("value must not be null or Infinite or NAN");
+        double result = value * (this.unit.conversionFactor/length2.conversionFactor);
+        double result1 = Math.round(result * 100.0) / 100.0;
+        return  new Length(result1, length2);
+    }
+
+    @Override
+    public String toString() {
+        return String.format(value + " " +unit);
     }
 
     @Override
@@ -46,18 +63,5 @@ public class Length {
         Length length = (Length) obj;
         if(length.unit == null) return false;
         return compare(length);
-    }
-    public static void main(String[] args) {
-        Length length1 = new Length(1.0,LengthUnit.FEET);
-        Length length2 = new Length(12.0,LengthUnit.INCHES);
-        System.out.println("Are Length Equals? =>  " +length1.equals(length2) );
-
-        Length length3 = new Length(1.0,LengthUnit.YARDS);
-        Length length4 = new Length(36.0,LengthUnit.INCHES);
-        System.out.println("Are Length Equals? =>  " +length3.equals(length4) );
-
-        Length length5 = new Length(100.0,LengthUnit.CENTIMETER);
-        Length length6 = new Length(39.3701,LengthUnit.INCHES);
-        System.out.println("Are Length Equals? =>  " +length5.equals(length6) );
     }
 }
