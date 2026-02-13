@@ -306,6 +306,14 @@ public class QuantityMeasurementAppTest {
     }
 
 
+    // UC6 Test Cases
+    @Test
+    public void testAddition_SameUnit_FeetPlusFeet() throws Exception {
+        Length length1 = new Length(1.0, Length.LengthUnit.FEET);
+        Length length2 = new Length(2.0, Length.LengthUnit.FEET);
+        Length lengthAddition = length1.add(length2);
+        assertEquals(3.0,lengthAddition.getValue(),1e-9);
+    }
 
 
 

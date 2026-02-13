@@ -27,11 +27,20 @@ public class QuantityMeasurementApp {
         return lengthConversion;
     }
 
+    public static void demonstrateLengthAddition(double value1, Length.LengthUnit LengthUnit1,double value2, Length.LengthUnit LengthUnit2) {
+        Length length1 = new Length(value1,LengthUnit1);
+        Length length2 = new Length(value2,LengthUnit2);
+        System.out.println("Length Addition  =>  " + length1.add(length2));
+    }
+
     public static void main(String[] args) throws Exception {
 
         demonstrateLengthComparison(1.0, Length.LengthUnit.FEET,12.0, Length.LengthUnit.INCHES);
         demonstrateLengthConversion(12.0,Length.LengthUnit.FEET, Length.LengthUnit.INCHES);
         demonstrateLengthConversion(new Length(1,Length.LengthUnit.CENTIMETER),Length.LengthUnit.INCHES);
+
+        demonstrateLengthAddition(1.0, Length.LengthUnit.FEET,1.0, Length.LengthUnit.YARDS);
+
 
     }
 }
