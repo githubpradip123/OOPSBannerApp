@@ -1,8 +1,9 @@
 package com.apps.quantitymeasurement;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
+import static com.apps.quantitymeasurement.QuantityMeasurementApp.demonstrateLengthConversion;
+import static org.junit.Assert.*;
 
 public class QuantityMeasurementAppTest {
 
@@ -237,6 +238,72 @@ public class QuantityMeasurementAppTest {
     }
 
 
+    // UC5 Test Cases
+    @Test
+    public void testConversion_FeetToInches() throws Exception {
+        Length length = demonstrateLengthConversion(1.0,Length.LengthUnit.FEET,Length.LengthUnit.INCHES);
+          assertEquals(12.0,length.getValue(),1e-9);
+    }
+    @Test
+    public void testConversion_InchesToFeet() throws Exception {
+        Length length = demonstrateLengthConversion(24.0,Length.LengthUnit.INCHES,Length.LengthUnit.FEET);
+        assertEquals(2.0,length.getValue(),1e-9);
+    }
+    @Test
+    public void testConversion_YardsToInches() throws Exception {
+        Length length = demonstrateLengthConversion(1.0,Length.LengthUnit.YARDS,Length.LengthUnit.INCHES);
+        assertEquals(36.00,length.getValue(),1e-9);
+    }
+    @Test
+    public void testConversion_InchesToYards() throws Exception {
+        Length length = demonstrateLengthConversion(72.0,Length.LengthUnit.INCHES,Length.LengthUnit.YARDS);
+        assertEquals(2.0,length.getValue(),1e-9);
+    }
+    @Test
+    public void testConversion_CentimetersToInches() throws Exception {
+        Length length = demonstrateLengthConversion(2.54,Length.LengthUnit.CENTIMETER,Length.LengthUnit.INCHES);
+        assertEquals(1.0,length.getValue(),1e-9);
+    }
+    @Test
+    public void testConversion_FeetToYard() throws Exception {
+        Length length = demonstrateLengthConversion(6.0,Length.LengthUnit.FEET,Length.LengthUnit.YARDS);
+        assertEquals(2.0,length.getValue(),1e-9);
+    }
+    @Test
+    public void testConversion_RoundTrip_PreservesValue() throws Exception {
+        Length length = demonstrateLengthConversion(6.0,Length.LengthUnit.FEET,Length.LengthUnit.INCHES);
+        Length length1 = demonstrateLengthConversion(length.getValue(),Length.LengthUnit.INCHES,Length.LengthUnit.FEET);
+        assertEquals(6.0, length1.getValue(),1e-9);
+    }
+    @Test
+    public void testConversion_ZeroValue() throws Exception {
+        Length length = demonstrateLengthConversion(0.0,Length.LengthUnit.FEET,Length.LengthUnit.INCHES);
+        assertEquals(0.00,length.getValue(),1e-9);
+    }
+    @Test
+    public void testConversion_NegativeValue() throws Exception {
+        Length length = demonstrateLengthConversion(-1.0,Length.LengthUnit.FEET,Length.LengthUnit.INCHES);
+        assertEquals(-12.0,length.getValue(),1e-9);
+    }
+    @Test
+    public void testConversion_InvalidUnit_Throws() {
+        Length length = new Length(1.0, Length.LengthUnit.FEET);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> length.convertTo(null));
+        assertTrue(ex.getMessage().toLowerCase().contains("must not be null"));
+
+    }
+    @Test
+    public void testConversion_NANOrInfinite_Throws() throws Exception {
+        Length length = new Length(Double.NaN, Length.LengthUnit.FEET);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,() -> length.convertTo(Length.LengthUnit.INCHES));
+        assertTrue(ex.getMessage().toLowerCase().contains("must not be null or infinite or nan"));
+    }
+    @Test
+    public void testConversion_PrecisionTolerance() throws Exception {
+        Length length = demonstrateLengthConversion(1.0,Length.LengthUnit.FEET,Length.LengthUnit.INCHES);
+        assertEquals(12.0, length.getValue(), 1e-9);
+
+    }
 
 
 
