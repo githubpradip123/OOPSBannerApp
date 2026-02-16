@@ -306,6 +306,108 @@ public class QuantityMeasurementAppTest {
     }
 
 
+    // UC6 Test Cases
+    @Test
+    public void testAddition_SameUnit_FeetPlusFeet() throws Exception {
+        Length length1 = new Length(1.0, Length.LengthUnit.FEET);
+        Length length2 = new Length(2.0, Length.LengthUnit.FEET);
+        Length lengthAddition = length1.add(length2);
+        assertEquals(3.0,lengthAddition.getValue(),1e-9);
+    }
+
+    @Test
+    public void testAddition_SameUnit_InchPlusInch() throws Exception {
+        Length length1 = new Length(12.0, Length.LengthUnit.INCHES);
+        Length length2 = new Length(12.0, Length.LengthUnit.INCHES);
+        Length lengthAddition = length1.add(length2);
+        assertEquals(24.0,lengthAddition.getValue(),1e-9);
+    }
+
+    @Test
+    public void testAddition_CrossUnit_FeetPlusInch() throws Exception {
+        Length length1 = new Length(1.0, Length.LengthUnit.FEET);
+        Length length2 = new Length(12.0, Length.LengthUnit.INCHES);
+        Length lengthAddition = length1.add(length2);
+        assertEquals(2.0,lengthAddition.getValue(),1e-9);
+    }
+
+    @Test
+    public void testAddition_CrossUnit_InchPlusFeet() throws Exception {
+        Length length1 = new Length(12.0, Length.LengthUnit.INCHES);
+        Length length2 = new Length(1.0, Length.LengthUnit.FEET);
+        Length lengthAddition = length1.add(length2);
+        assertEquals(24.0,lengthAddition.getValue(),1e-9);
+    }
+
+    @Test
+    public void testAddition_CrossUnit_YARDPlusFeet() throws Exception {
+        Length length1 = new Length(1.0, Length.LengthUnit.YARDS);
+        Length length2 = new Length(3.0, Length.LengthUnit.FEET);
+        Length lengthAddition = length1.add(length2);
+        assertEquals(2.0,lengthAddition.getValue(),1e-9);
+    }
+
+    @Test
+    public void testAddition_CrossUnit_CentimeterPlusInch() throws Exception {
+        Length length1 = new Length(2.54, Length.LengthUnit.CENTIMETER);
+        Length length2 = new Length(1.0, Length.LengthUnit.INCHES);
+        Length lengthAddition = length1.add(length2);
+        assertEquals(5.08,lengthAddition.getValue(),1e-9);
+    }
+
+    @Test
+    public void testAddition_Commutativity() throws Exception {
+        Length length1 = new Length(1, Length.LengthUnit.FEET);
+        Length length2 = new Length(12.0, Length.LengthUnit.INCHES);
+        Length lengthAddition = length1.add(length2);
+        Length lengthAddition1 = length2.add(length1);
+        double sum1InInches = lengthAddition.convertTo(Length.LengthUnit.INCHES).getValue();
+        double sum2InInches = lengthAddition1.convertTo(Length.LengthUnit.INCHES).getValue();
+        assertTrue( sum1InInches == sum2InInches);
+    }
+
+    @Test
+    public void testAddition_WithZero() throws Exception {
+        Length length1 = new Length(5.0, Length.LengthUnit.FEET);
+        Length length2 = new Length(0.0, Length.LengthUnit.INCHES);
+        Length lengthAddition = length1.add(length2);
+        assertEquals(5.0,lengthAddition.getValue(),1e-9);
+    }
+
+    @Test
+    public void testAddition_Negative_Values() throws Exception {
+        Length length1 = new Length(5.0, Length.LengthUnit.FEET);
+        Length length2 = new Length(-2.0, Length.LengthUnit.FEET);
+        Length lengthAddition = length1.add(length2);
+        assertEquals(3.0,lengthAddition.getValue(),1e-9);
+    }
+
+    @Test
+    public void testAddition_NullSecondOperand() throws Exception {
+        Length length1 = new Length(5.0, Length.LengthUnit.FEET);
+        Length length2 =  null;
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,() -> length1.add(length2));
+        assertTrue(ex.getMessage().toLowerCase().contains("must not be null"));
+    }
+
+    @Test
+    public void testAddition_LargeValues() throws Exception {
+        Length length1 = new Length(1e6, Length.LengthUnit.FEET);
+        Length length2 = new Length(1e6 ,Length.LengthUnit.FEET);
+        Length lengthAddition = length1.add(length2);
+        assertEquals(2e6,lengthAddition.getValue(),1e-9);
+    }
+
+    @Test
+    public void testAddition_SmallValues() throws Exception {
+        Length length1 = new Length(0.001, Length.LengthUnit.FEET);
+        Length length2 = new Length(0.002, Length.LengthUnit.FEET);
+        Length lengthAddition = length1.add(length2);
+        assertEquals(0.0,lengthAddition.getValue(),1e-9);
+    }
+
+
+
 
 
 
