@@ -53,6 +53,8 @@ public class Length {
     }
 
     public Length add(Length thatLength){
+        if (thatLength == null  ) throw new IllegalArgumentException("Length unit must not be null");
+        if (!Double.isFinite(value)) throw new IllegalArgumentException("value must not be null or Infinite or NAN");
         double value1 = this.convertToBaseUnit();
         double value2 = thatLength.convertToBaseUnit();
         double addedValue = value1  + value2;
