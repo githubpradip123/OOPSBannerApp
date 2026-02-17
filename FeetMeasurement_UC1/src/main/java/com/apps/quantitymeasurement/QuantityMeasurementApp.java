@@ -27,19 +27,36 @@ public class QuantityMeasurementApp {
         return lengthConversion;
     }
 
-    public static void demonstrateLengthAddition(double value1, Length.LengthUnit LengthUnit1,double value2, Length.LengthUnit LengthUnit2) {
+    public static Length demonstrateLengthAddition(double value1, Length.LengthUnit LengthUnit1,double value2, Length.LengthUnit LengthUnit2) {
         Length length1 = new Length(value1,LengthUnit1);
         Length length2 = new Length(value2,LengthUnit2);
-        System.out.println("Length Addition  =>  " + length1.add(length2));
+        Length length = length1.add(length2);
+        System.out.println("Length Addition  =>  " + length);
+        return  length;
     }
+
+    public static Length demonstrateLengthAddition( Length length2,Length.LengthUnit toUnit) {
+        if(length2 == null) throw new IllegalArgumentException("Length must not be null");
+        if(toUnit == null) throw new IllegalArgumentException("Length unit must not be null");
+        Length length1 = new Length(1.0,Length.LengthUnit.FEET);
+
+        Length lengthAddition = length1.add(length2,toUnit);
+        System.out.println("Length Addition Different Units =>  " + lengthAddition);
+        return lengthAddition;
+    }
+
+
+
 
     public static void main(String[] args) throws Exception {
 
         demonstrateLengthComparison(1.0, Length.LengthUnit.FEET,12.0, Length.LengthUnit.INCHES);
+
         demonstrateLengthConversion(12.0,Length.LengthUnit.FEET, Length.LengthUnit.INCHES);
         demonstrateLengthConversion(new Length(1,Length.LengthUnit.CENTIMETER),Length.LengthUnit.INCHES);
 
         demonstrateLengthAddition(1.0, Length.LengthUnit.FEET,1.0, Length.LengthUnit.YARDS);
+        demonstrateLengthAddition(new Length(12,Length.LengthUnit.INCHES),Length.LengthUnit.FEET);
 
 
     }

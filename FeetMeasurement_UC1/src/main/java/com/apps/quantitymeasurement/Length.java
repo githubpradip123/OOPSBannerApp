@@ -55,18 +55,39 @@ public class Length {
     public Length add(Length thatLength){
         if (thatLength == null  ) throw new IllegalArgumentException("Length unit must not be null");
         if (!Double.isFinite(value)) throw new IllegalArgumentException("value must not be null or Infinite or NAN");
+
+        Length length = this.addAndConvert(thatLength,this.unit);
+         return length;
+    }
+
+    public Length add(Length length, LengthUnit targetUnit) {
+        if (targetUnit == null) throw new IllegalArgumentException("Length unit must not be null");
+        if (length == null  ) throw new IllegalArgumentException("Length must not be null");
+        if (!Double.isFinite(value)) throw new IllegalArgumentException("value must not be null or Infinite or NAN");
+        Length finalLength = this.addAndConvert(length,targetUnit);
+        return finalLength;
+    }
+
+    public Length addAndConvert(Length length2, LengthUnit targetUnit) {
+        if (targetUnit == null) throw new IllegalArgumentException("Length unit must not be null");
+        if (length2 == null  ) throw new IllegalArgumentException("Length must not be null");
+        if (!Double.isFinite(value)) throw new IllegalArgumentException("value must not be null or Infinite or NAN");
+
         double value1 = this.convertToBaseUnit();
-        double value2 = thatLength.convertToBaseUnit();
+        double value2 = length2.convertToBaseUnit();
+
         double addedValue = value1  + value2;
-        double finalResult = convertFromBaseToTargetUnit(addedValue,this.unit);
-          finalResult = Math.round(finalResult * 100.0) / 100.0;
-        return new Length(finalResult,this.unit);
+        double finalResult = convertFromBaseToTargetUnit(addedValue,targetUnit);
+
+        DecimalFormat df = new DecimalFormat("#.###");
+        finalResult = Double.parseDouble(df.format(finalResult));
+
+        return new Length(finalResult, targetUnit);
     }
 
     public double convertFromBaseToTargetUnit(double lengthInInches,LengthUnit targetUnit){
         return lengthInInches / targetUnit.conversionFactor;
     }
-
 
     @Override
     public String toString() {
